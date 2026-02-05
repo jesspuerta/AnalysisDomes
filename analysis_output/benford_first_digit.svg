@@ -1,0 +1,33 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='900' height='500'>
+<rect width='100%' height='100%' fill='white' />
+<text x='450.0' y='40.0' font-size='20' text-anchor='middle'>Benford First-Digit Comparison (JEEntryKey)</text>
+<text x='80' y='60' font-size='12' fill='#4C78A8'>Observed</text>
+<text x='180' y='60' font-size='12' fill='#F58518'>Expected</text>
+<rect x='80.0' y='420.0' width='32.88888888888889' height='0.0' fill='#4C78A8' />
+<rect x='112.88888888888889' y='317.6456931803192' width='32.88888888888889' height='102.35430681968077' fill='#F58518' />
+<text x='112.88888888888889' y='440' font-size='9' text-anchor='middle'>1</text>
+<rect x='162.22222222222223' y='80.0' width='32.88888888888889' height='340.0' fill='#4C78A8' />
+<rect x='195.11111111111111' y='360.1266323703997' width='32.88888888888889' height='59.87336762960032' fill='#F58518' />
+<text x='195.11111111111111' y='440' font-size='9' text-anchor='middle'>2</text>
+<rect x='244.44444444444446' y='420.0' width='32.88888888888889' height='0.0' fill='#4C78A8' />
+<rect x='277.33333333333337' y='377.51906080991955' width='32.88888888888889' height='42.48093919008046' fill='#F58518' />
+<text x='277.33333333333337' y='440' font-size='9' text-anchor='middle'>3</text>
+<rect x='326.6666666666667' y='420.0' width='32.88888888888889' height='0.0' fill='#4C78A8' />
+<rect x='359.5555555555556' y='387.05395066613903' width='32.88888888888889' height='32.94604933386097' fill='#F58518' />
+<text x='359.5555555555556' y='440' font-size='9' text-anchor='middle'>4</text>
+<rect x='408.8888888888889' y='420.0' width='32.88888888888889' height='0.0' fill='#4C78A8' />
+<rect x='441.7777777777778' y='393.081651497164' width='32.88888888888889' height='26.91834850283604' fill='#F58518' />
+<text x='441.7777777777778' y='440' font-size='9' text-anchor='middle'>5</text>
+<rect x='491.11111111111114' y='420.0' width='32.88888888888889' height='0.0' fill='#4C78A8' />
+<rect x='524.0' y='397.2346656113969' width='32.88888888888889' height='22.765334388603087' fill='#F58518' />
+<text x='524.0' y='440' font-size='9' text-anchor='middle'>6</text>
+<rect x='573.3333333333334' y='420.0' width='32.88888888888889' height='0.0' fill='#4C78A8' />
+<rect x='606.2222222222223' y='400.28439519852265' width='32.88888888888889' height='19.715604801477376' fill='#F58518' />
+<text x='606.2222222222223' y='440' font-size='9' text-anchor='middle'>7</text>
+<rect x='655.5555555555557' y='420.0' width='32.88888888888889' height='0.0' fill='#4C78A8' />
+<rect x='688.4444444444446' y='402.60757156048015' width='32.88888888888889' height='17.39242843951985' fill='#F58518' />
+<text x='688.4444444444446' y='440' font-size='9' text-anchor='middle'>8</text>
+<rect x='737.7777777777778' y='420.0' width='32.88888888888889' height='0.0' fill='#4C78A8' />
+<rect x='770.6666666666667' y='404.4463791056589' width='32.88888888888889' height='15.553620894341115' fill='#F58518' />
+<text x='770.6666666666667' y='440' font-size='9' text-anchor='middle'>9</text>
+</svg>
