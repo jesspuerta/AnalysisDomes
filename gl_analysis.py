@@ -13,6 +13,7 @@ import zipfile
 import xml.etree.ElementTree as ET
 from collections import Counter
 from datetime import datetime, timedelta
+from decimal import Decimal, InvalidOperation
 from typing import Dict, List, Optional, Tuple
 
 EXCEL_EPOCH = datetime(1899, 12, 30)
@@ -26,6 +27,85 @@ PREFERRED_CATEGORY_COLUMNS = [
     "AccountClass",
 ]
 PREFERRED_NUMERIC_COLUMNS = ["Amount", "Debit", "Credit", "AbsoluteAmount"]
+BENFORD_MIN_SAMPLE = 50
+BENFORD_TWO_DIGIT_MIN_SAMPLE = 100
+
+
+class BenfordResult:
+    def __init__(
+        self,
+        column: str,
+        sample_size: int,
+        mad_first_digit: Optional[float],
+        chi_square_first_digit: Optional[float],
+        mad_two_digit: Optional[float],
+        chi_square_two_digit: Optional[float],
+        first_digit_counts: Dict[int, int],
+        two_digit_counts: Dict[int, int],
+    ) -> None:
+        self.column = column
+        self.sample_size = sample_size
+        self.mad_first_digit = mad_first_digit
+        self.chi_square_first_digit = chi_square_first_digit
+        self.mad_two_digit = mad_two_digit
+        self.chi_square_two_digit = chi_square_two_digit
+        self.first_digit_counts = first_digit_counts
+        self.two_digit_counts = two_digit_counts
+
+
+def benford_expected_probabilities(first_two_digits: bool = False) -> Dict[int, float]:
+    if first_two_digits:
+        return {n: math.log10(1 + 1 / n) for n in range(10, 100)}
+    return {d: math.log10(1 + 1 / d) for d in range(1, 10)}
+
+
+def extract_leading_digits(value: float, digits: int = 1) -> Optional[int]:
+    try:
+        decimal_value = Decimal(str(value)).copy_abs()
+    except (InvalidOperation, ValueError):
+        return None
+    if decimal_value.is_zero():
+        return None
+    digit_string = format(decimal_value, "f").replace(".", "").lstrip("0")
+    if len(digit_string) < digits:
+        return None
+    return int(digit_string[:digits])
+
+
+def mean_absolute_deviation(observed: Dict[int, int], expected: Dict[int, float]) -> float:
+    total = sum(observed.values())
+    if total == 0:
+        return 0.0
+    deviations = []
+    for key, expected_prob in expected.items():
+        observed_prob = observed.get(key, 0) / total
+        deviations.append(abs(observed_prob - expected_prob))
+    return sum(deviations) / len(deviations)
+
+
+def chi_square_statistic(observed: Dict[int, int], expected: Dict[int, float]) -> float:
+    total = sum(observed.values())
+    if total == 0:
+        return 0.0
+    chi_square = 0.0
+    for key, expected_prob in expected.items():
+        expected_count = expected_prob * total
+        if expected_count == 0:
+            continue
+        chi_square += ((observed.get(key, 0) - expected_count) ** 2) / expected_count
+    return chi_square
+
+
+def benford_classification(mad: Optional[float]) -> str:
+    if mad is None:
+        return "insufficient sample"
+    if mad < 0.006:
+        return "close conformity"
+    if mad < 0.012:
+        return "acceptable conformity"
+    if mad < 0.015:
+        return "marginal conformity"
+    return "nonconformity"
 
 
 def col_letters(cell_ref: str) -> str:
@@ -241,6 +321,97 @@ def write_svg_histogram(path: str, title: str, bins: List[Tuple[float, float, in
         f.write("\n".join(svg_parts))
 
 
+def write_benford_chart(
+    path: str,
+    title: str,
+    observed: Dict[int, int],
+    expected: Dict[int, float],
+) -> None:
+    width = 900
+    height = 500
+    margin = 80
+    labels = list(expected.keys())
+    total = sum(observed.values()) or 1
+    observed_values = [observed.get(label, 0) for label in labels]
+    expected_values = [round(expected[label] * total) for label in labels]
+    max_value = max(observed_values + expected_values)
+    bar_width = (width - 2 * margin) / max(len(labels), 1)
+
+    svg_parts = [
+        f"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}'>",
+        f"<rect width='100%' height='100%' fill='white' />",
+        f"<text x='{width/2}' y='{margin/2}' font-size='20' text-anchor='middle'>{title}</text>",
+        "<text x='80' y='60' font-size='12' fill='#4C78A8'>Observed</text>",
+        "<text x='180' y='60' font-size='12' fill='#F58518'>Expected</text>",
+    ]
+
+    for idx, label in enumerate(labels):
+        x = margin + idx * bar_width
+        obs = observed_values[idx]
+        exp = expected_values[idx]
+        obs_height = (height - 2 * margin) * (obs / max_value) if max_value else 0
+        exp_height = (height - 2 * margin) * (exp / max_value) if max_value else 0
+        obs_y = height - margin - obs_height
+        exp_y = height - margin - exp_height
+        svg_parts.append(
+            f"<rect x='{x}' y='{obs_y}' width='{bar_width*0.4}' height='{obs_height}' fill='#4C78A8' />"
+        )
+        svg_parts.append(
+            f"<rect x='{x + bar_width*0.4}' y='{exp_y}' width='{bar_width*0.4}' height='{exp_height}' fill='#F58518' />"
+        )
+        svg_parts.append(
+            f"<text x='{x + bar_width*0.4}' y='{height - margin + 20}' font-size='9' text-anchor='middle'>{label}</text>"
+        )
+
+    svg_parts.append("</svg>")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(svg_parts))
+
+
+def analyze_benford(columns: Dict[str, List[float]]) -> List[BenfordResult]:
+    results: List[BenfordResult] = []
+    expected_first_digit = benford_expected_probabilities()
+    expected_two_digit = benford_expected_probabilities(first_two_digits=True)
+
+    for name, values in columns.items():
+        digits = []
+        two_digits = []
+        for value in values:
+            leading_digit = extract_leading_digits(value, digits=1)
+            if leading_digit is not None:
+                digits.append(leading_digit)
+            leading_two = extract_leading_digits(value, digits=2)
+            if leading_two is not None:
+                two_digits.append(leading_two)
+
+        digit_counts = Counter(digits)
+        two_digit_counts = Counter(two_digits)
+        mad_first = None
+        chi_first = None
+        mad_two = None
+        chi_two = None
+        if len(digits) >= BENFORD_MIN_SAMPLE:
+            mad_first = mean_absolute_deviation(digit_counts, expected_first_digit)
+            chi_first = chi_square_statistic(digit_counts, expected_first_digit)
+        if len(two_digits) >= BENFORD_TWO_DIGIT_MIN_SAMPLE:
+            mad_two = mean_absolute_deviation(two_digit_counts, expected_two_digit)
+            chi_two = chi_square_statistic(two_digit_counts, expected_two_digit)
+
+        results.append(
+            BenfordResult(
+                column=name,
+                sample_size=len(digits),
+                mad_first_digit=mad_first,
+                chi_square_first_digit=chi_first,
+                mad_two_digit=mad_two,
+                chi_square_two_digit=chi_two,
+                first_digit_counts=dict(digit_counts),
+                two_digit_counts=dict(two_digit_counts),
+            )
+        )
+    return results
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Analyze GL journal XLSX exports.")
     parser.add_argument(
@@ -454,6 +625,104 @@ def main() -> None:
             column_type = infer_column_type(name, values)
             non_null = [v for v in values if v not in (None, "")]
             writer.writerow([name, column_type, len(non_null), len(values) - len(non_null)])
+
+    # Benford analysis report and charts.
+    benford_results = analyze_benford(numeric_columns)
+    expected_first_digit = benford_expected_probabilities()
+    expected_two_digit = benford_expected_probabilities(first_two_digits=True)
+    benford_lines = []
+    benford_lines.append("Benford Analysis Report")
+    benford_lines.append("========================")
+    benford_lines.append(f"Source file: {source_path}")
+    benford_lines.append("")
+    benford_lines.append(
+        "MAD thresholds: <0.006 close, 0.006-0.012 acceptable, 0.012-0.015 marginal, >0.015 nonconformity"
+    )
+    benford_lines.append("")
+
+    for result in benford_results:
+        benford_lines.append(f"Column: {result.column}")
+        benford_lines.append(f"  Sample size (first digit): {result.sample_size}")
+        if result.mad_first_digit is not None:
+            benford_lines.append(
+                f"  First-digit MAD: {result.mad_first_digit:.4f} "
+                f"({benford_classification(result.mad_first_digit)})"
+            )
+            benford_lines.append(
+                f"  First-digit chi-square: {result.chi_square_first_digit:.2f}"
+            )
+        else:
+            benford_lines.append("  First-digit MAD: insufficient sample")
+        if result.mad_two_digit is not None:
+            benford_lines.append(
+                f"  First-two-digit MAD: {result.mad_two_digit:.4f} "
+                f"({benford_classification(result.mad_two_digit)})"
+            )
+            benford_lines.append(
+                f"  First-two-digit chi-square: {result.chi_square_two_digit:.2f}"
+            )
+        else:
+            benford_lines.append("  First-two-digit MAD: insufficient sample")
+        benford_lines.append("")
+
+    summary_path = os.path.join(output_dir, "benford_summary.txt")
+    with open(summary_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(benford_lines))
+
+    # Write a detailed CSV for Benford expected vs observed.
+    benford_csv_path = os.path.join(output_dir, "benford_details.csv")
+    with open(benford_csv_path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(
+            [
+                "column",
+                "digit_type",
+                "digit",
+                "observed_count",
+                "observed_pct",
+                "expected_pct",
+            ]
+        )
+        for result in benford_results:
+            total_first = sum(result.first_digit_counts.values()) or 1
+            for digit, expected_prob in expected_first_digit.items():
+                observed = result.first_digit_counts.get(digit, 0)
+                writer.writerow(
+                    [
+                        result.column,
+                        "first",
+                        digit,
+                        observed,
+                        f"{observed / total_first:.6f}",
+                        f"{expected_prob:.6f}",
+                    ]
+                )
+            total_two = sum(result.two_digit_counts.values()) or 1
+            for digit, expected_prob in expected_two_digit.items():
+                observed = result.two_digit_counts.get(digit, 0)
+                writer.writerow(
+                    [
+                        result.column,
+                        "first_two",
+                        digit,
+                        observed,
+                        f"{observed / total_two:.6f}",
+                        f"{expected_prob:.6f}",
+                    ]
+                )
+
+    # Render Benford chart for the most complete numeric column.
+    best_result = max(
+        benford_results, key=lambda r: r.sample_size, default=None
+    )
+    if best_result and best_result.sample_size:
+        chart_path = os.path.join(output_dir, "benford_first_digit.svg")
+        write_benford_chart(
+            chart_path,
+            f"Benford First-Digit Comparison ({best_result.column})",
+            best_result.first_digit_counts,
+            expected_first_digit,
+        )
 
 
 if __name__ == "__main__":

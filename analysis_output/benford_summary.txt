@@ -1,0 +1,54 @@
+Benford Analysis Report
+========================
+Source file: je_samples (1).xlsx
+
+MAD thresholds: <0.006 close, 0.006-0.012 acceptable, 0.012-0.015 marginal, >0.015 nonconformity
+
+Column: JEEntryKey
+  Sample size (first digit): 37905
+  First-digit MAD: 0.1831 (nonconformity)
+  First-digit chi-square: 177352.70
+  First-two-digit MAD: 0.0218 (nonconformity)
+  First-two-digit chi-square: 1750969.65
+
+Column: JENumber
+  Sample size (first digit): 37905
+  First-digit MAD: 0.1831 (nonconformity)
+  First-digit chi-square: 177352.70
+  First-two-digit MAD: 0.0218 (nonconformity)
+  First-two-digit chi-square: 1750969.65
+
+Column: JEIdentifier
+  Sample size (first digit): 37905
+  First-digit MAD: 0.1831 (nonconformity)
+  First-digit chi-square: 177352.70
+  First-two-digit MAD: 0.0218 (nonconformity)
+  First-two-digit chi-square: 1750969.65
+
+Column: GLAccountNumber
+  Sample size (first digit): 37850
+  First-digit MAD: 0.0905 (nonconformity)
+  First-digit chi-square: 28542.78
+  First-two-digit MAD: 0.0190 (nonconformity)
+  First-two-digit chi-square: 433281.95
+
+Column: Debit
+  Sample size (first digit): 18951
+  First-digit MAD: 0.0081 (acceptable conformity)
+  First-digit chi-square: 400.22
+  First-two-digit MAD: 0.0026 (close conformity)
+  First-two-digit chi-square: 8708.35
+
+Column: Credit
+  Sample size (first digit): 18954
+  First-digit MAD: 0.0081 (acceptable conformity)
+  First-digit chi-square: 399.88
+  First-two-digit MAD: 0.0026 (close conformity)
+  First-two-digit chi-square: 8706.61
+
+Column: Amount
+  Sample size (first digit): 37905
+  First-digit MAD: 0.0081 (acceptable conformity)
+  First-digit chi-square: 800.10
+  First-two-digit MAD: 0.0026 (close conformity)
+  First-two-digit chi-square: 17414.93
