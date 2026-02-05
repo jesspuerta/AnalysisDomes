@@ -1,0 +1,34 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='900' height='500'>
+<rect width='100%' height='100%' fill='white' />
+<text x='450.0' y='40.0' font-size='20' text-anchor='middle'>Distribution of Amount</text>
+<rect x='80.0' y='419.963900833466' width='59.2' height='0.036099166533949144' fill='#F58518' />
+<text x='109.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 109.6,440)'>-318,506--254,805</text>
+<text x='109.6' y='414.963900833466' font-size='10' text-anchor='middle'>2</text>
+<rect x='154.0' y='419.963900833466' width='59.2' height='0.036099166533949144' fill='#F58518' />
+<text x='183.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 183.6,440)'>-254,805--191,103</text>
+<text x='183.6' y='414.963900833466' font-size='10' text-anchor='middle'>2</text>
+<rect x='228.0' y='419.6931570844614' width='59.2' height='0.30684291553856774' fill='#F58518' />
+<text x='257.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 257.6,440)'>-191,103--127,402</text>
+<text x='257.6' y='414.6931570844614' font-size='10' text-anchor='middle'>17</text>
+<rect x='302.0' y='418.26724000637046' width='59.2' height='1.7327599936295588' fill='#F58518' />
+<text x='331.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 331.6,440)'>-127,402--63,701</text>
+<text x='331.6' y='413.26724000637046' font-size='10' text-anchor='middle'>96</text>
+<rect x='376.0' y='80.0' width='59.2' height='340.0' fill='#F58518' />
+<text x='405.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 405.6,440)'>-63,701--0</text>
+<text x='405.6' y='75.0' font-size='10' text-anchor='middle'>18837</text>
+<rect x='450.0' y='80.07219833306789' width='59.2' height='339.9278016669321' fill='#F58518' />
+<text x='479.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 479.6,440)'>0-63,701</text>
+<text x='479.6' y='75.07219833306789' font-size='10' text-anchor='middle'>18833</text>
+<rect x='524.0' y='418.26724000637046' width='59.2' height='1.7327599936295588' fill='#F58518' />
+<text x='553.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 553.6,440)'>63,701-127,402</text>
+<text x='553.6' y='413.26724000637046' font-size='10' text-anchor='middle'>96</text>
+<rect x='598.0' y='419.6751075011945' width='59.2' height='0.3248924988055423' fill='#F58518' />
+<text x='627.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 627.6,440)'>127,402-191,103</text>
+<text x='627.6' y='414.6751075011945' font-size='10' text-anchor='middle'>18</text>
+<rect x='672.0' y='419.963900833466' width='59.2' height='0.036099166533949144' fill='#F58518' />
+<text x='701.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 701.6,440)'>191,103-254,805</text>
+<text x='701.6' y='414.963900833466' font-size='10' text-anchor='middle'>2</text>
+<rect x='746.0' y='419.963900833466' width='59.2' height='0.036099166533949144' fill='#F58518' />
+<text x='775.6' y='440' font-size='9' text-anchor='middle' transform='rotate(20 775.6,440)'>254,805-318,506</text>
+<text x='775.6' y='414.963900833466' font-size='10' text-anchor='middle'>2</text>
+</svg>
