@@ -1,0 +1,217 @@
+Journal Entry Data Summary
+==========================
+Source file: je_samples (1).xlsx
+Rows: 37905
+Columns: 30
+
+Column: JEEntryKey
+  Type: numeric
+  Non-null: 37905
+  Nulls: 0
+  Stats: min=20,151.00, max=20,169,568.00, mean=18,228,372.99, median=20,158,478.00
+
+Column: JENumber
+  Type: numeric
+  Non-null: 37905
+  Nulls: 0
+  Stats: min=20,151.00, max=20,169,568.00, mean=18,228,372.99, median=20,158,478.00
+
+Column: JEIdentifier
+  Type: numeric
+  Non-null: 37905
+  Nulls: 0
+  Stats: min=20,151.00, max=20,169,568.00, mean=18,228,372.99, median=20,158,478.00
+
+Column: GLAccountNumber
+  Type: numeric
+  Non-null: 37905
+  Nulls: 0
+  Stats: min=11,845.00, max=86,200.00, mean=29,372.43, median=14,260.00
+
+Column: BLANK
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: EffectiveDate
+  Type: date
+  Non-null: 37905
+  Nulls: 0
+  Date range: 2014-07-01 to 2016-06-30
+
+Column: Period
+  Type: text
+  Non-null: 37905
+  Nulls: 0
+  Unique values: 24
+
+Column: EntryDate
+  Type: date
+  Non-null: 37905
+  Nulls: 0
+  Date range: 2014-06-25 to 2016-06-30
+
+Column: PreparerID
+  Type: text
+  Non-null: 37905
+  Nulls: 0
+  Unique values: 15
+
+Column: Source
+  Type: text
+  Non-null: 37905
+  Nulls: 0
+  Unique values: 10
+
+Column: BusinessUnit
+  Type: text
+  Non-null: 37905
+  Nulls: 0
+  Unique values: 9
+
+Column: JEDescription
+  Type: text
+  Non-null: 37905
+  Nulls: 0
+  Unique values: 3063
+
+Column: Debit
+  Type: numeric
+  Non-null: 18952
+  Nulls: 18953
+  Stats: min=-160,918.46, max=318,505.80, mean=2,287.75, median=236.32
+
+Column: Credit
+  Type: numeric
+  Non-null: 18954
+  Nulls: 18951
+  Stats: min=-318,505.80, max=160,918.46, mean=-2,287.39, median=-236.32
+
+Column: Amount
+  Type: numeric
+  Non-null: 37905
+  Nulls: 0
+  Stats: min=-318,505.80, max=318,505.80, mean=0.00, median=-0.05
+
+Column: AbsoluteAmount
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: SysManInd
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: UserDefined1
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: UserDefined2
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: UserDefined3
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: PeriodFlag
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: AccountType
+  Type: text
+  Non-null: 37905
+  Nulls: 0
+  Unique values: 4
+
+Column: AccountClass
+  Type: text
+  Non-null: 37905
+  Nulls: 0
+  Unique values: 18
+
+Column: GLAccountStartingBalance
+  Type: text
+  Non-null: 3
+  Nulls: 37902
+  Unique values: 1
+
+Column: GLAccountEndingBalance
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: SortOrder
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: GLAccountName
+  Type: text
+  Non-null: 37905
+  Nulls: 0
+  Unique values: 73
+
+Column: Category
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: Marked
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Column: MarkedInReport
+  Type: text
+  Non-null: 0
+  Nulls: 37905
+  Unique values: 0
+
+Top categorical fields
+-----------------------
+BLANK:
+
+Period:
+  2016-12: 1949
+  2016-09: 1928
+  2016-11: 1914
+  2015-04: 1832
+  2015-10: 1764
+
+PreparerID:
+  POS: 7892
+  GUESTSYS: 6826
+  Victoria Simpson|Accounting Manager: 6144
+  Carolyn Slater|Food Operations Manager: 5658
+  Elizabeth Rees|Food Operations Manager: 4444
+
+Source:
+  CREDIT CARD RECEIPT: 10263
+  CHECK: 9776
+  CASH RECEIPT: 6221
+  PURCHASE CARD: 5276
+  PAYROLL S/B JV: 3936
+
+BusinessUnit:
+  FOOD SERVICE: 18010
+  HOTEL: 11648
+  HOTEL PANTRY: 3290
+  HOUSEKEEPING: 2506
+  MAINTENANCE: 1961

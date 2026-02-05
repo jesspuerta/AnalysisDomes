@@ -1,0 +1,29 @@
+name: GL Analysis
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "je_samples (1).xlsx"
+      - "gl_analysis.py"
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run GL analysis
+        run: python gl_analysis.py --input "je_samples (1).xlsx" --output analysis_output
+
+      - name: Upload analysis artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gl-analysis-output
+          path: analysis_output/
